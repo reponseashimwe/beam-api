@@ -8,8 +8,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "types": ["node"]
+    "moduleResolution": "node"
+    // "types": ["node"]
   },
   "include": ["app"]
 }
