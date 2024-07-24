@@ -647,6 +647,46 @@
 				}
 			}
 		},
+		"/api/auth/request-verify-email": {
+			"post": {
+				"operationId": "RequestVerifyEmail",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IResetPasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/auth/reset-password": {
 			"post": {
 				"operationId": "ResetPassword",

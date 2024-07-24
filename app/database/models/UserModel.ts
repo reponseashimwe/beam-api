@@ -1,53 +1,48 @@
-import { UUIDV4 } from "sequelize";
-import {
-  Table,
-  Default,
-  AllowNull,
-  Unique,
-  PrimaryKey,
-  Model,
-  Column,
-  DataType,
-  Sequelize,
-  CreatedAt,
-} from "sequelize-typescript";
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-@Table({
-  tableName: "users",
-  timestamps: false,
-})
-class UserModel extends Model {
-  @Default(UUIDV4())
-  @PrimaryKey
-  @Column(DataType.UUID)
-  id!: string;
+// Define the User schema
+const userSchema = new Schema(
+  {
+    id: {
+      type: String,
+      default: () => new mongoose.Types.ObjectId(),
+      unique: true,
+      index: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
 
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  name!: string;
+// Create the User model
+const User = mongoose.model("User", userSchema);
 
-  @AllowNull(false)
-  @Unique(true)
-  @Column(DataType.STRING)
-  email!: string;
-
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  password!: string;
-
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  phone!: string;
-
-  @AllowNull(false)
-  @Default(false)
-  @Column(DataType.BOOLEAN)
-  isEmailVerified!: boolean;
-
-  @CreatedAt
-  @Default(Sequelize.fn("NOW"))
-  @Column(DataType.DATE)
-  createdAt!: Date;
-}
-
-export default UserModel;
+export default User;

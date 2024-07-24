@@ -25,7 +25,7 @@ import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 import CustomError from "../utils/CustomError";
 import { compare, encrypt } from "../utils/Password";
-import UserModel from "../database/models/UserModel";
+import User from "../database/models/UserModel";
 
 @Tags("Authorization")
 @Route("api/auth")
@@ -59,6 +59,12 @@ export class AuthController extends Controller {
   }
 
   @Response(200)
+  @Post("request-verify-email")
+  public static async requestVerifyEmail(@Body() body: IResetPasswordRequest) {
+    return AuthService.requestVerifyEmail(body);
+  }
+
+  @Response(200)
   @Post("reset-password")
   public static async resetPassword(@Body() body: IResetPassword) {
     return AuthService.resetPassword(body);
@@ -86,7 +92,7 @@ export class AuthController extends Controller {
       );
     }
     const encryptedPassword = encrypt(newPassword);
-    await UserModel.update(
+    await User.update(
       { password: encryptedPassword },
       { where: { id: user.id } }
     );

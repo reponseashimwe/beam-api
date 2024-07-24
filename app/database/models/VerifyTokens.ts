@@ -1,55 +1,46 @@
-import { Sequelize, UUIDV4 } from "sequelize";
-import {
-  Model,
-  Table,
-  Column,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-  Default,
-  PrimaryKey,
-  CreatedAt,
-  DeletedAt,
-  UpdatedAt,
-} from "sequelize-typescript";
-import UserModel from "./UserModel";
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-@Table({
-  tableName: "verify_tokens",
-  paranoid: false,
-})
-class VerifyToken extends Model {
-  @Default(UUIDV4())
-  @PrimaryKey
-  @Column(DataType.UUID)
-  id!: string;
+// Define the VerifyToken schema
+const verifyTokenSchema = new Schema(
+  {
+    id: {
+      type: String,
+      default: () => new mongoose.Types.ObjectId(),
+      unique: true,
+      index: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    token: {
+      type: String,
+      required: true,
+    },
+    expiryDate: {
+      type: Date,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+    deletedAt: {
+      type: Date,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
 
-  @ForeignKey(() => UserModel)
-  @Column(DataType.UUID)
-  userId!: string;
-
-  @Column(DataType.STRING)
-  token!: string;
-
-  @Column(DataType.DATE)
-  expiryDate!: Date;
-
-  @BelongsTo(() => UserModel)
-  user!: UserModel;
-
-  @CreatedAt
-  @Default(Sequelize.fn("now"))
-  @Column(DataType.DATE)
-  createdAt!: Date;
-
-  @UpdatedAt
-  @Default(Sequelize.fn("now"))
-  @Column(DataType.DATE)
-  updatedAt!: Date;
-
-  @DeletedAt
-  @Column(DataType.DATE)
-  deletedAt!: Date;
-}
+// Create the VerifyToken model
+const VerifyToken = mongoose.model("VerifyToken", verifyTokenSchema);
 
 export default VerifyToken;

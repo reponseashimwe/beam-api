@@ -6,8 +6,9 @@ import cors from "cors";
 import http from "http";
 import VARIABLES from "./config/variables";
 import apiRouter from "./route/api.routes";
-import db from "./config/db.config";
+// import db from "./config/db.config";
 import CustomError from "./utils/CustomError";
+import connectDB from "./config/db.config";
 
 const app = express();
 
@@ -35,15 +36,16 @@ app.use("/api", apiRouter);
 app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
   console.log(err.message);
   if (err instanceof CustomError) {
-    console.error(err);
     return res.status(err.statusCode).json({ error: err.message });
   } else {
-    return res.status(500).json({ error: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ error: err.message || "Something went wrong" });
   }
 });
 const server = http.createServer(app);
 
-db.authenticate().then(async () => {
+connectDB().then(async () => {
   server.listen(VARIABLES.PORT, () => {
     console.log(`runnning on http://localhost:${VARIABLES.PORT}`);
   });

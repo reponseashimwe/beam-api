@@ -68,6 +68,19 @@ authRouter.post(
 );
 
 authRouter.post(
+  "/request-verify-email",
+  validate(resetPasswordRequestSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const response = await AuthController.requestVerifyEmail(req.body);
+      return res.status(200).json(response);
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+authRouter.post(
   "/reset-password",
   validate(resetPasswordSchema),
   async (req: Request, res: Response, next: NextFunction) => {

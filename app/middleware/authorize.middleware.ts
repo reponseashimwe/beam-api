@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import UserModel from "../database/models/UserModel";
+import User from "../database/models/UserModel";
 import { IUser, IUserWithPermissions } from "../type/auth";
 import { verifyToken } from "../utils/jwt";
 import UserService from "../services/user.service";

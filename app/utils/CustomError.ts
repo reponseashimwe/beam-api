@@ -19,6 +19,10 @@ export const catchSequelizeError = ({ item, error }: IError): void => {
       `${item} ${error.errors[0].path} already exists`,
       400
     );
+  } else if (error.code === 11000) {
+    // Duplicate key error
+    const field = Object.keys(error.keyPattern)[0];
+    throw new CustomError(`${item} ${field} already exists`, 400);
   } else {
     console.log(error);
     throw new CustomError("Something went wrong", 500);

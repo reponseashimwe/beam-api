@@ -23,6 +23,7 @@ const VARIABLES = {
   APP_NAME: process.env.APP_NAME || "Beam",
   MAILER_NAME: process.env.MAILER_NAME || "",
   MAILER_PORT: process.env.MAILER_PORT || "",
+  MONGO_URL: process.env.MONGO_URL || "",
 };
 
 export default VARIABLES;
