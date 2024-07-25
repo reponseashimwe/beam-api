@@ -2,7 +2,7 @@
   "name": "beam-api",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/main.ts",
+  "main": "./app/main.ts",
   "scripts": {
     "predev": "pnpm run swagger",
     "swagger": "tsoa spec",

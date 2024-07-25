@@ -32,6 +32,9 @@ app.use(
 );
 
 app.use("/api", apiRouter);
+app.get("/test", (req, res) => {
+  res.json({ message: "API is working!" });
+});
 
 app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
   console.log(err.message);
