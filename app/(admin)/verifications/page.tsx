@@ -9,6 +9,8 @@ import Status from "@/components/common/Status";
 import Table from "@/components/table/Table";
 import apiClient from "@/lib/axiosInstance";
 import { getVerifications } from "@/lib/queries/verifications";
+import { CheckBadgeIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Verification } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
@@ -53,7 +55,7 @@ const Verifications = () => {
             render: (row: Verification) => (
               <div className="w-full bg-white p-5 rounded-md flex flex-col gap-6 justify-between">
                 <div className="flex flex-col gap-2">
-                  <div className="font-bold text-gray-900">{row.name}</div>
+                    <div className="font-bold text-gray-900">{row.name}</div>
                   <div className="text-xs">{row.description}</div>
                   <div className="flex gap-2">
                     {row.requiredDocs
@@ -68,12 +70,11 @@ const Verifications = () => {
                       ))}
                   </div>
                 </div>
-
-                <Status
-                  status={row.isAutoApproved}
-                  trueText="Auto approved"
-                  falseText="Manual"
-                />
+                  <Status
+                    status={row.isAutoApproved ? true : null}
+                    trueText="Auto approved"
+                    pendingText="Approval Required"
+                  />
               </div>
             ),
           }}

@@ -4,12 +4,14 @@ type props = {
   status: boolean | null;
   trueText?: string;
   falseText?: string;
+  pendingText?: string;
   big?: boolean;
 };
 const Status: FC<props> = ({
   status,
   trueText = "Approved",
   falseText = "Declined",
+  pendingText = "Pending",
   big = false,
 }) => {
   const color =
@@ -32,7 +34,7 @@ const Status: FC<props> = ({
       } bg-opacity-50 rounded text-center inline-block`}
       style={style}
     >
-      {status === null ? "Pending" : status === false ? falseText : trueText}
+      {status === null ? pendingText : status === false ? falseText : trueText}
     </div>
   );
 };
