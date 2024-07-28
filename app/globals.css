@@ -2,6 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
+.content-grid,
+.content-grid > .full-width {
+  --padding-inline: 1rem;
+  --content-max-width: 85%;
+  --breakout-max-width: 1350px;
+  --breakout-size: calc(
+    (var(--breakout-max-width) - var(--content-max-width)) / 2
+  );
+
+  display: grid;
+  grid-template-columns:
+    [full-width-start] minmax(var(--padding-inline), 1fr)
+    [breakout-start breakout-left-start] minmax(0, var(--breakout-size))
+    [content-start breakout-right-start] min(
+      100% - (var(--padding-inline) * 2),
+      var(--content-max-width)
+    )
+    [content-end breakout-left-end]
+    minmax(0, var(--breakout-size)) [breakout-end breakout-right-end]
+    minmax(var(--padding-inline), 1fr) [full-width-end];
+
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:not(.full-width) {
+    overflow-x: clip;
+  }
+
+  > :not(.breakout, .breakout-left, .breakout-right, .full-width) {
+    grid-column: content;
+  }
+
+  > .breakout-left {
+    grid-column: breakout-left;
+  }
+  > .breakout-right {
+    grid-column: breakout-right;
+  }
+  > .breakout {
+    grid-column: breakout;
+  }
+
+  > .full-width {
+    grid-column: full-width;
+  }
+
+  @media (max-width: 1280px) {
+    --content-max-width: 1024px;
+    --breakout-max-width: 1150px;
+  }
+
+  @media (max-width: 1024px) {
+    --content-max-width: 900px;
+    --breakout-max-width: 950px;
+  }
+
+  @media (max-width: 900px) {
+    --content-max-width: 768px;
+    --breakout-max-width: 830px;
+  }
+
+  @media (max-width: 768px) {
+    --content-max-width: 640px;
+    --breakout-max-width: 700px;
+  }
+
+  @media (max-width: 640px) {
+    --content-max-width: 550px;
+    --breakout-max-width: 600px;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -24,6 +118,15 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 @layer utilities {
