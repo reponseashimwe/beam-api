@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import apiClient from "@/lib/axiosInstance";
-import logo from "@/public/logo.png";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import CustomButton from "@/components/common/form/Button";
