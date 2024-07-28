@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, ReactElement, ReactNode, useEffect, useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/20/solid";
 import SyncLoader from "react-spinners/SyncLoader";
 import { FunnelIcon } from "@heroicons/react/24/outline";
 import Drawer from "../common/Drawer";
@@ -153,10 +157,16 @@ const Table: FC<TableProps> = ({
           <div className="w-full box-border relative bg-inherit overflow-x-auto ">
             <div className="w-full absolute  relative max-h-screen">
               <div
-                className={`${columns.styles ? columns.styles.contaierStyle : "table"} text-sm text-left text-gray-700 w-full h-full`}
+                className={`${
+                  columns.styles ? columns.styles.contaierStyle : "table"
+                } text-sm text-left text-gray-700 w-full h-full`}
               >
                 {columns.titles && (
-                  <div className={`${columns.styles ? columns.styles.itemStyle : "table-row"}`}>
+                  <div
+                    className={`${
+                      columns.styles ? columns.styles.itemStyle : "table-row"
+                    }`}
+                  >
                     {columns.titles.map((column, columnIndex) => (
                       <div
                         className="px-2 py-4 border-b text-gray-900 font-medium table-cell"
@@ -170,14 +180,18 @@ const Table: FC<TableProps> = ({
 
                 {columns.renderHeading && (
                   <div
-                    className={`${columns.styles ? columns.styles.itemStyle : "table-row"} relative text-gray-900 font-medium`}
+                    className={`${
+                      columns.styles ? columns.styles.itemStyle : "table-row"
+                    } relative text-gray-900 font-medium`}
                   >
                     {columns.renderHeading()}
                   </div>
                 )}
                 {data.map((row, rowIndex) => (
                   <div
-                    className={`${columns.styles ? columns.styles.itemStyle : "table-row"} relative`}
+                    className={`${
+                      columns.styles ? columns.styles.itemStyle : "table-row"
+                    } relative`}
                     key={rowIndex}
                   >
                     {columns.render(row)}
@@ -190,8 +204,10 @@ const Table: FC<TableProps> = ({
             <div className="py-1 flex justify-between px-1">
               <div>
                 <span className="text-sm font-bold">
-                  Showing {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}-
-                  {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}
+                  Showing{" "}
+                  {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}-
+                  {Math.min(currentPage * itemsPerPage, totalItems)} of{" "}
+                  {totalItems}
                 </span>
               </div>
               <nav className="isolate inline-flex -space-x-px rounded-md">
@@ -213,7 +229,7 @@ const Table: FC<TableProps> = ({
                   <>
                     <button
                       className={`relative inline-flex ${isActive(
-                        1,
+                        1
                       )} items-center rounded-l-md px-2 py-2 text-gray-400  ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
                       onClick={() => onChangePage && onChangePage(1)}
                     >
@@ -225,7 +241,7 @@ const Table: FC<TableProps> = ({
                 {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
                   <button
                     className={`relative inline-flex ${isActive(
-                      startPage + i,
+                      startPage + i
                     )} items-center rounded-l-md px-2 py-2 text-gray-400  ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
                     key={startPage + i}
                     onClick={() => onChangePage && onChangePage(startPage + i)}
@@ -238,7 +254,7 @@ const Table: FC<TableProps> = ({
                     {endPage < totalPages - 1 && <span>...</span>}
                     <button
                       className={`relative inline-flex items-center ${isActive(
-                        totalPages,
+                        totalPages
                       )} rounded-l-md px-2 py-2 text-gray-400  ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
                       onClick={() => onChangePage && onChangePage(totalPages)}
                     >
@@ -253,7 +269,9 @@ const Table: FC<TableProps> = ({
                   <ChevronRightIcon
                     onClick={() => {
                       const nextPage = currentPage + 1;
-                      nextPage <= totalPages && onChangePage && onChangePage(nextPage);
+                      nextPage <= totalPages &&
+                        onChangePage &&
+                        onChangePage(nextPage);
                     }}
                     className="h-5 w-5"
                     aria-hidden="true"
@@ -265,7 +283,9 @@ const Table: FC<TableProps> = ({
         </div>
       ) : (
         <div className="p-4">
-          <h2 className=" text-lg font-medium">No data to display</h2>
+          {!isLoading && (
+            <h2 className=" text-lg font-medium">No data to display</h2>
+          )}
         </div>
       )}
     </div>
