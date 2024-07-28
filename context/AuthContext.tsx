@@ -18,7 +18,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  fetchUser: (redirectOnFalse: boolean) => void;
+  fetchUser: (redirectOnFalse: boolean, redirectIfNotAdmin?: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,11 +27,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  const fetchUser = async (redirectOnFalse: boolean) => {
+  const fetchUser = async (redirectOnFalse: boolean, redirectIfNotAdmin: boolean = false) => {
     const token = localStorage.getItem("token");
     if (token !== null) {
       try {
         const response = await apiClient.get("/auth/me");
+        if (redirectIfNotAdmin && !response.data.isAdmin) {
+          router.push("/dashboard");
+        }
         setUser(response.data);
       } catch (error) {
         localStorage.removeItem("token");

@@ -8,12 +8,15 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: "admin@beam.com" },
-    update: {},
+    update: {
+      isAdmin: true
+    },
     create: {
       email: "admin@beam.com",
       name: "Admin User",
       password: hashedPassword,
       isEmailVerified: true,
+      isAdmin: true
     },
   });
 
