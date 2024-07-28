@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/mailer";
 import VARIABLES from "@/lib/config";
@@ -26,7 +25,9 @@ export default async function handler(
         return res.status(400).json({ message: "Email already used" });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
-      const verificationToken = crypto.randomBytes(32).toString("hex");
+      const token = jwt.sign({ email }, VARIABLES.JWT_TOKEN, {
+        expiresIn: "30d",
+      });
 
       const user = await prisma.user.create({
         data: {
@@ -34,13 +35,8 @@ export default async function handler(
           email,
           password: hashedPassword,
           isEmailVerified: false,
-          emailVerificationToken: verificationToken,
+          emailVerificationToken: token,
         },
-      });
-
-      // Generate a verification token
-      const token = jwt.sign({ email }, VARIABLES.JWT_TOKEN, {
-        expiresIn: "30d",
       });
 
       // Send verification email

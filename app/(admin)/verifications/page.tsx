@@ -5,9 +5,12 @@ import Checkbox from "@/components/common/form/Checkbox";
 import Field from "@/components/common/form/Field";
 import TextArea from "@/components/common/form/TextArea";
 import Modal from "@/components/common/Modal";
+import Status from "@/components/common/Status";
+import Table from "@/components/table/Table";
 import apiClient from "@/lib/axiosInstance";
+import { getVerifications } from "@/lib/queries/verifications";
 import { Verification } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -24,13 +27,57 @@ type FormProps = {
 const Verifications = () => {
   const [formOpened, setFormOpened] = useState(false);
 
+  const { data: verifications, isLoading } = useQuery({
+    queryFn: getVerifications,
+    queryKey: ["verifications"],
+  });
+
   return (
     <div className="w-full mt-6">
       <div className="flex justify-between items-center gap-5">
         <div className="text-lg font-bold">Verifications</div>
         <div>
-          <CustomButton label="Creaate" onClick={() => setFormOpened(true)} />
+          <CustomButton label="Create" onClick={() => setFormOpened(true)} />
         </div>
+      </div>
+      <div className="pt-6">
+        <Table
+          isLoading={isLoading}
+          data={verifications || []}
+          columns={{
+            styles: {
+              contaierStyle:
+                "grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+              itemStyle: "flex w-full",
+            },
+            render: (row: Verification) => (
+              <div className="w-full bg-white p-5 rounded-md flex flex-col gap-6 justify-between">
+                <div className="flex flex-col gap-2">
+                  <div className="font-bold text-gray-900">{row.name}</div>
+                  <div className="text-xs">{row.description}</div>
+                  <div className="flex gap-2">
+                    {row.requiredDocs
+                      .filter((doc) => doc.length > 0)
+                      .map((doc: string, index: number) => (
+                        <div
+                          key={index}
+                          className="px-2 py-1 text-xs rounded-md border"
+                        >
+                          {doc}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <Status
+                  status={row.isAutoApproved}
+                  trueText="Auto approved"
+                  falseText="Manual"
+                />
+              </div>
+            ),
+          }}
+        />
       </div>
       {formOpened && (
         <Modal
@@ -45,10 +92,10 @@ const Verifications = () => {
   );
 };
 
-const Form:FC<FormProps> = ({ closeModal }) => {
+const Form: FC<FormProps> = ({ closeModal }) => {
+  const queryClient = useQueryClient();
   const {
     register,
-    setError,
     handleSubmit,
     formState: { errors },
   } = useForm<VerificationType>();
@@ -60,15 +107,12 @@ const Form:FC<FormProps> = ({ closeModal }) => {
     },
     onSuccess: (data) => {
       toast.success("Verification created");
+      queryClient.invalidateQueries({ queryKey: ["verifications"] });
       closeModal();
     },
   });
 
   const create = (data: VerificationType) => {
-    // if (data.requiredDocs && data.requiredDocs.length == 0) {
-    //     setError("requiredDocs", {message: ""})
-    // }
-
     if (data.isAutoApproved) {
       data = { ...data, isAutoApproved: true };
     } else {
