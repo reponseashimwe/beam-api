@@ -4,7 +4,7 @@ import Link from "next/link";
 function Links({ user }: { user: User | null }) {
   return (
     <>
-      {user && (
+      {(user && user.isAdmin === false) && (
         // Logged in user links
         <>
           <Link className="py-2" href="/schedule">
@@ -18,6 +18,23 @@ function Links({ user }: { user: User | null }) {
           </Link>
           <Link className="py-2" href="/listings">
             My listings
+          </Link>
+        </>
+      )}
+      {user && user.isAdmin && (
+        // Admin links
+        <>
+          <Link className="py-2" href="/events">
+            Events
+          </Link>
+          <Link className="py-2" href="/users">
+            Users
+          </Link>
+          <Link className="py-2" href="/verifications">
+            Verifications
+          </Link>
+          <Link className="py-2" href="/categories">
+            Categories
           </Link>
         </>
       )}
