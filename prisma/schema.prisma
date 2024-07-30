@@ -23,6 +23,8 @@ model User {
   emailVerificationToken String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  verifications     UserVerification[]
 }
 
 model Verification {
@@ -33,6 +35,8 @@ model Verification {
   description    String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  users          UserVerification[]
 }
 
 
@@ -42,4 +46,19 @@ model Category {
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model UserVerification {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  verificationId  Int
+  uploads         String[]
+  status          Boolean? // null: pending, false: rejected, true: approved
+  reason          String?
+  requestChanges  String?
+  changed         Boolean  @default(false)
+  user            User     @relation(fields: [userId], references: [id])
+  verification    Verification @relation(fields: [verificationId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
