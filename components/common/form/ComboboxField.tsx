@@ -100,7 +100,7 @@ const ComboboxField: FC<IOptionsField> = ({
         <Combobox value={selected} onChange={valueChanged}>
           <div className="relative mt-1">
             <div
-              className={`bg-gray-100 bg-opacity-50 block w-full rounded-xl border-0 py-1.5 px-5 text-gray-900 shadow-sm ring-1 ring-inset ${
+              className={`block w-full rounded-xl border-0 py-1.5 px-5 text-gray-900 shadow-sm ring-1 ring-inset ${
                 error
                   ? `focus:ring-red-500 ring-red-300 placeholder:text-red-400`
                   : `focus:ring-primary ring-gray-300 placeholder:text-gray-400`

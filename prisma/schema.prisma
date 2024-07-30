@@ -25,6 +25,7 @@ model User {
   updatedAt         DateTime @updatedAt
   events                   Event[]
   verifications    UserVerification[]
+
 }
 
 model Verification {
