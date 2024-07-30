@@ -15,7 +15,7 @@ const Dashboard = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {user && (
-        <div className="min-h-screen w-full bg-bg bg-opacity-10 flex flex-col">
+        <div className="min-h-screen w-full bg-white flex flex-col">
           <Header user={user} />
           <div className="content-grid w-full full-width">{children}</div>
         </div>
