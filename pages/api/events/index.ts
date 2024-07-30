@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { getSession } from "@/lib/session";
 
 const prisma = new PrismaClient();
 
@@ -18,13 +19,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             console.error("Error fetching events:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
-    } else {
-        res.setHeader('Allow', ['GET']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 
-    if (req.method === "POST") {
-        const { name, description, startDate, endDate, location, posterUrl, verificationIds, organizerId } = req.body;
+    else if (req.method === "POST") {
+        console.log(req.body);
+        const {
+            name,
+            description,
+            startDate,
+            endDate,
+            location,
+            posterUrl,
+            verificationIds,
+        } = req.body;
+
+        const session = await getSession(req);
+        console.log(session)
+
+        if (!session?.userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const organizerId = session.userId;
+
+        const verificationIdsArray = verificationIds.map((id: string) => parseInt(id));
 
         try {
             // Check if organizer exists
@@ -38,11 +56,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
             // Check if all verifications exist
             const verificationsExist = await prisma.verification.findMany({
-                where: { id: { in: verificationIds } },
+                where: { id: { in: verificationIdsArray } },
             });
 
-            if (verificationsExist.length !== verificationIds.length) {
-                return res.status(400).json({ error: "One or more verifications not found" });
+            if (verificationsExist.length !== verificationIdsArray.length) {
+                return res
+                    .status(400)
+                    .json({ error: "One or more verifications not found" });
             }
 
             // Create the event
@@ -62,7 +82,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
             // Connect verifications
             await prisma.verificationOnEvent.createMany({
-                data: verificationIds.map((verificationId: number) => ({
+                data: verificationIdsArray.map((verificationId: number) => ({
                     eventId: event.id,
                     verificationId,
                 })),
@@ -74,7 +94,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             res.status(500).json({ error: "Internal Server Error" });
         }
     } else {
-        res.setHeader('Allow', ['POST']);
+        res.setHeader("Allow", ["POST"]);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

@@ -9,37 +9,42 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                       Int       @id @default(autoincrement())
-  email                    String    @unique
-  name                     String?
-  password                 String
-  isAdmin                  Boolean   @default(false)
-  isEmailVerified          Boolean   @default(false)
-  emailVerificationToken   String?
-  createdAt                DateTime  @default(now())
-  updatedAt                DateTime  @updatedAt
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  name              String?
+  password          String
+  isAdmin           Boolean  @default(false)
+  isEmailVerified   Boolean  @default(false)
+  emailVerificationToken String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
   events                   Event[]
+  verifications    UserVerification[]
 }
 
 model Verification {
-  id          Int       @id @default(autoincrement())
-  name        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id             Int      @id @default(autoincrement())
+  name           String   @unique
+  requiredDocs   String[] 
+  isAutoApproved Boolean
+  description    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+   users         UserVerification[]
   events      VerificationOnEvent[]
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
   description String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   events    Event[]
 }
 
@@ -51,6 +56,8 @@ model Event {
   endDate     DateTime
   location    String
   posterUrl   String
+  ticketPrice Float    @default(0.00)
+  max_attendees Int?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   categoryId  Int?
@@ -58,6 +65,21 @@ model Event {
   organizerId Int
   organizer   User      @relation(fields: [organizerId], references: [id])
   verifications VerificationOnEvent[]
+}
+
+model UserVerification {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  verificationId  Int
+  uploads         String[]
+  status          Boolean? // null: pending, false: rejected, true: approved
+  reason          String?
+  requestChanges  String?
+  changed         Boolean  @default(false)
+  user            User     @relation(fields: [userId], references: [id])
+  verification    Verification @relation(fields: [verificationId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model VerificationOnEvent {
