@@ -16,8 +16,8 @@ function Links({ user }: { user: User | null }) {
           <Link className="py-2" href="/calendar">
             Calendar
           </Link>
-          <Link className="py-2" href="/listings">
-            My listings
+          <Link className="py-2" href="/events">
+            My Events
           </Link>
         </>
       )}
