@@ -21,7 +21,14 @@ async function main() {
   });
 
   console.log("Admin user seeded");
-}
+
+  await prisma.verification.create({
+    data: {
+      userId: 2, // Replace with the actual user ID
+      code: "123456", // Replace with the verification code
+      expiresAt: new Date(), // Replace with the expiration date
+    },
+  });
 
 main()
   .catch((e) => {
@@ -31,3 +38,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+}
