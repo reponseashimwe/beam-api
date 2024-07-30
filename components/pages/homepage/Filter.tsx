@@ -12,12 +12,13 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { eventType } from "@/app/(guest)/explore/page";
 import { useRouter } from "next/navigation";
 import { getVerifications } from "@/lib/queries/verifications";
 import { getCategories } from "@/lib/queries/categories";
 import { Category, Verification } from "@prisma/client";
 import { format } from "date-fns";
+import apiClient from "@/lib/axiosInstance";
+import { Event } from "@prisma/client";
 
 type IFilterRequest = {
   categoryId: string;
@@ -27,12 +28,11 @@ type IFilterRequest = {
 };
 
 type props = {
-  defaultValues?: IFilterRequest;
-  setData?: Dispatch<SetStateAction<eventType | undefined>>;
-  setLoading?: Dispatch<SetStateAction<boolean>>;
-  redirect?: boolean;
-  defaultLoaded?: boolean;
-  showFilters?: boolean;
+  defaultValues: IFilterRequest;
+  setData: Dispatch<SetStateAction<Event[] | undefined>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  defaultLoaded: boolean;
+  showFilters: boolean;
   setDefaultLoaded?: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -40,15 +40,18 @@ const Filter: FC<props> = ({
   defaultValues,
   setData,
   setLoading,
-  redirect = true,
   defaultLoaded = false,
   setDefaultLoaded,
   showFilters,
 }) => {
   const router = useRouter();
   const mutation = useMutation({
-    mutationFn: async (data: IFilterRequest): Promise<eventType> => {
-      return [];
+    mutationFn: async (data: IFilterRequest): Promise<Event[]> => {
+      setLoading(true);
+      const res = await apiClient.post(`events/filter`, data);
+      setLoading(false);
+
+      return res.data;
     },
     onSuccess: (data) => {
       setData && setData(data);
@@ -100,7 +103,7 @@ const Filter: FC<props> = ({
   });
 
   useEffect(() => {
-    if (redirect == false && defaultValues && defaultLoaded == false) {
+    if (defaultValues && defaultLoaded == false) {
       Object.keys(defaultValues).map((key) => {
         changeKey(
           key,
@@ -212,7 +215,7 @@ const Filter: FC<props> = ({
             )}
           </div>
 
-          <div className={`${redirect ? "hidden" : ""} flex gap-2 items-end`}>
+          <div className={`flex gap-2 items-end`}>
             <div className="w-full">
               <OptionsField
                 icon={<MapPinIcon className="w-5" />}
@@ -274,6 +277,12 @@ const ShowFilters: FC<showFiltersProps> = ({
         <div className="bg-white border text-gray-900 font-medium p-3 rounded flex items-center">
           <div className="text-gray-500 pr-2">Verification</div>{" "}
           {verification.name}{" "}
+          <div
+            className="text-white pl-5 cursor-pointer"
+            onClick={() => changeKey("verificationId", "", true)}
+          >
+            <XCircleIcon className="w-5 text-red-500" />
+          </div>
         </div>
       )}
       {type && (
@@ -292,7 +301,7 @@ const ShowFilters: FC<showFiltersProps> = ({
           <div className="text-gray-500 pr-4">Category:</div> {category.name}
           <div
             className="text-white pl-5 cursor-pointer"
-            onClick={() => changeKey("category", "", true)}
+            onClick={() => changeKey("categoryId", "", true)}
           >
             <XCircleIcon className="w-5 text-red-500" />
           </div>
