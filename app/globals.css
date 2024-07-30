@@ -134,3 +134,43 @@ body {
     text-wrap: balance;
   }
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 10px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+/* Firefox */
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-moz-calendar-picker-indicator {
+  position: absolute;
+  left: 10px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+/* Internet Explorer and older Edge */
+input[type="date"]::-ms-clear {
+  display: none;
+}
+
+input[type="date"]::-ms-input-placeholder {
+  color: transparent;
+}
+
+input[type="date"]::-ms-calendar-picker-indicator {
+  position: absolute;
+  left: 10px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+/* General styles for the date input */
+input[type="date"] {
+  position: relative;
+}
