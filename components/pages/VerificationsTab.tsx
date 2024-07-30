@@ -1,6 +1,5 @@
 "use client";
 
-import Status from "@/components/common/Status";
 import Table from "@/components/table/Table";
 import { getVerifications } from "@/lib/queries/verifications";
 import { UserGroupIcon } from "@heroicons/react/24/outline";

@@ -31,12 +31,9 @@ type props = {
 const Header: FC<props> = ({ user }) => {
   return (
     <header
-      className={`full-width content-grid bg-white sticky z-20 top-0 shadow`}
+      className={`content-grid bg-white  z-20 z-10 shadow sticky top-0`}
       // border-b border-active bg-white
     >
-      <div className={`full-width h-[1.5px] !flex !justify-start `}>
-        <div className="h-full bg-primary bg-opacity-80" />
-      </div>
       <div className="flex gap-2 items-center justify-between py-3">
         <Link href={"/"} className="flex h-fit">
           <Logo className="h-8 w-fit" color="text-blue" />
