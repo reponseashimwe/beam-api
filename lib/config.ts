@@ -18,6 +18,7 @@ const VARIABLES = {
   APP_NAME: process.env.APP_NAME || "Beam",
   MAILER_NAME: process.env.MAILER_NAME || "",
   MAILER_PORT: process.env.MAILER_PORT || "",
+  BACKEND_URL: process.env.BACKEND_URL || "http://localhost:3000/api",
 };
 
 export default VARIABLES;

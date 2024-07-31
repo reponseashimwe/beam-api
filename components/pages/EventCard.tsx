@@ -135,7 +135,7 @@ const EventCard = ({
           )}
         </div>
         <div>
-          {!canNotRegister && (
+          {user && !canNotRegister && (
             <CustomButton
               className="self-end bg-white text-black border border-black font-bold py-2 px-4 rounded hover:bg-gray-100"
               onClick={() => mutation.mutate({ eventId: row.id })}
