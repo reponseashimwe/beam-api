@@ -10,6 +10,9 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@material-tailwind/react": "^2.1.9",

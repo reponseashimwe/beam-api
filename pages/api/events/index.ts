@@ -30,6 +30,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       location,
       posterUrl,
       verificationIds,
+      max_attendees,
+      ticketPrice,
+      categoryIds,
     } = req.body;
 
     const session = await getSession(req);
@@ -78,6 +81,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           organizer: {
             connect: { id: organizerId },
           },
+          takenSeats: 0,
+          max_attendees: parseInt(max_attendees, 10),
+          ticketPrice: parseInt(ticketPrice),
+          category: categoryIds
+            ? { connect: { id: parseInt(categoryIds, 10) } }
+            : undefined,
         },
       });
 

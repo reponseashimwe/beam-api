@@ -7,8 +7,8 @@ function Links({ user }: { user: User | null }) {
       {user && user.isAdmin === false && (
         // Logged in user links
         <>
-          <Link className="py-2" href="/schedule">
-            Schedule
+          <Link className="py-2" href="/dashboard">
+            Dashboard
           </Link>
           <Link className="py-2" href="/explore">
             Explore
@@ -27,9 +27,7 @@ function Links({ user }: { user: User | null }) {
           <Link className="py-2" href="/events">
             Events
           </Link>
-          <Link className="py-2" href="/users">
-            Users
-          </Link>
+
           <Link className="py-2" href="/verifications">
             Verifications
           </Link>

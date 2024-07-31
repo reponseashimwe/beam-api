@@ -10,11 +10,22 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import apiClient from "@/lib/axiosInstance";
-import { User } from "@prisma/client";
+import {
+  User,
+  UserBooking,
+  UserVerification,
+  Verification,
+} from "@prisma/client";
 import { toast } from "react-toastify";
 
+interface UserType extends User {
+  bookings: UserBooking[];
+  events: Event[];
+  verifications: UserVerification[];
+}
+
 interface AuthContextType {
-  user: User | null;
+  user: UserType | null;
   register: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -24,16 +35,19 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const router = useRouter();
 
-  const fetchUser = async (redirectOnFalse: boolean, redirectIfNotAdmin: boolean = false) => {
+  const fetchUser = async (
+    redirectOnFalse: boolean,
+    redirectIfNotAdmin: boolean = false
+  ) => {
     const token = localStorage.getItem("token");
     if (token !== null) {
       try {
         const response = await apiClient.get("/auth/me");
         if (redirectIfNotAdmin && !response.data.isAdmin) {
-          router.push("/dashboard");
+          router.push("/events");
         }
         setUser(response.data);
       } catch (error) {
@@ -67,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       toast.success("Login successful! Redirecting...");
-      router.push("/dashboard");
+      router.push("/events");
     } catch (error: any) {
       if (error.response.status == 403) {
         router.push("/verify-email");

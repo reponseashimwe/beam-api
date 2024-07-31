@@ -25,7 +25,7 @@ model User {
   updatedAt         DateTime @updatedAt
   events                   Event[]
   verifications    UserVerification[]
-
+bookings      UserBooking[] 
 }
 
 model Verification {
@@ -66,6 +66,8 @@ model Event {
   organizerId Int
   organizer   User      @relation(fields: [organizerId], references: [id])
   verifications VerificationOnEvent[]
+  bookings      UserBooking[]
+  takenSeats Int?
 }
 
 model UserVerification {
@@ -91,3 +93,17 @@ model VerificationOnEvent {
 
   @@id([eventId, verificationId])
 }
+
+model UserBooking {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  eventId         Int
+  status          Boolean?
+ 
+  user            User     @relation(fields: [userId], references: [id])
+  event           Event    @relation(fields: [eventId], references: [id])
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+

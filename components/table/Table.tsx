@@ -155,7 +155,7 @@ const Table: FC<TableProps> = ({
       {data.length > 0 ? (
         <div>
           <div className="w-full box-border relative bg-inherit overflow-x-auto ">
-            <div className="w-full  relative max-h-screen">
+            <div className="w-full  relative">
               <div
                 className={`${
                   columns.styles ? columns.styles.contaierStyle : "table"

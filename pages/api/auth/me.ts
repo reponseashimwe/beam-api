@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+import { tree } from "next/dist/build/templates/app-page";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,12 +17,21 @@ export default async function handler(
     try {
       const user = await prisma.user.findUnique({
         where: { id: session.userId },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          isAdmin: true,
-          isEmailVerified: true,
+
+        include: {
+          bookings: { include: { event: true } },
+          events: {
+            include: {
+              bookings: {
+                include: { user: true },
+              },
+              organizer: true,
+              verifications: {
+                include: { verification: true },
+              },
+            },
+          },
+          verifications: { include: { verification: true } },
         },
       });
 
