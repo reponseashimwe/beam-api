@@ -127,7 +127,7 @@ function Actions({ user }: { user: User | null }) {
   } else {
     return (
       <>
-        <Link href={`/list-event`}>
+        <Link href={`/events`}>
           <Button
             size="sm"
             className={`bg-primary py-2 font-inherit rounded-md `}
