@@ -11,7 +11,7 @@ const EventsSection = () => {
   const [data, setData] = useState<Event[] | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [defaultLoaded, setDefaultLoaded] = useState<boolean>(false);
-  const searchParams = localStorage.getItem("search");
+  const searchParams = null;
 
   const defaultValues =
     searchParams != null ? JSON.parse(searchParams) : undefined;
@@ -54,6 +54,7 @@ const EventsSection = () => {
           )}
 
           <Table
+            position="relative"
             isLoading={loading}
             data={data || []}
             columns={{

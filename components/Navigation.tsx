@@ -164,10 +164,6 @@ const Profile = ({ user }: { user: User | null }) => {
                 className="flex origin-top flex-col transition duration-400 ease-out data-[closed]:scale-95 data-[closed]:opacity-0 rounded-md shadow-lg px-0 w-[240px] mt-5 max-w-full py-2 bg-white max-w-full z-20"
               >
                 <div className="flex w-full flex-col px-8 py-8 gap-6">
-                  <Link href={"/dashboard"} className="flex gap-6">
-                    <ChartBarIcon className="text-gray-500 w-5" />
-                    <span>Dashboard</span>
-                  </Link>
                   <Link href={"/profile"} className="flex gap-6">
                     <UserCircleIcon className="text-gray-500 w-5" />
                     <span>Profile</span>
