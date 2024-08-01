@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       toast.success("Login successful! Redirecting...");
-      router.push("/events");
+      router.push("/dashboard");
     } catch (error: any) {
       if (error.response.status == 403) {
         router.push("/verify-email");

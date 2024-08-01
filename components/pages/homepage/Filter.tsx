@@ -103,16 +103,7 @@ const Filter: FC<props> = ({
   });
 
   useEffect(() => {
-    if (defaultValues && defaultLoaded == false) {
-      Object.keys(defaultValues).map((key) => {
-        changeKey(
-          key,
-          defaultValues[
-            key as "verificationId" | "type" | "categoryId" | "date"
-          ]
-        );
-      });
-
+    if (defaultLoaded == false) {
       setLoading && setLoading(true);
       mutation.mutate(defaultValues);
       setFilters(defaultValues);

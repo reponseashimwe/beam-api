@@ -17,7 +17,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (user !== null) {
-      router.push("/events");
+      router.push("/dashboard");
     }
   });
 

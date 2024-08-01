@@ -43,10 +43,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const organizerId = session.userId;
-
-    const verificationIdsArray = verificationIds.map((id: string) =>
-      parseInt(id)
-    );
+    const verificationIdsArray =
+      (verificationIds && verificationIds?.map((id: string) => parseInt(id))) ||
+      [];
 
     try {
       // Check if organizer exists

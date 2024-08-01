@@ -13,12 +13,14 @@ const DashboardPage = () => {
   return (
     <>
       {isLoading && <p className="w-full py-20">Loading ...</p>}
-      {user && (
-        <MonthCalendar
-          data={user.bookings.map((b) => b.event).concat(user.events)}
-          user={user.id}
-        />
-      )}
+      <div className="flex justify-center">
+        {user && (
+          <MonthCalendar
+            data={user.bookings.map((b) => b.event).concat(user.events)}
+            user={user.id}
+          />
+        )}
+      </div>
     </>
   );
 };
