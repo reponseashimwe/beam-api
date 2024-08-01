@@ -24,6 +24,9 @@ function Links({ user }: { user: User | null }) {
       {user && user.isAdmin && (
         // Admin links
         <>
+          <Link className="py-2" href="/dashboard">
+            Dashboard
+          </Link>
           <Link className="py-2" href="/events">
             Events
           </Link>

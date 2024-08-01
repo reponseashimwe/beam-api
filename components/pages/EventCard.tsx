@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import CustomButton from "../common/form/Button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { format } from "date-fns";
 
 export interface EventType extends Event {
   verifications: VerificationOnEvent[];
@@ -77,7 +78,7 @@ const EventCard = ({
         const hasVerif = userVerifications.some((v) =>
           verificationsIds.includes(v)
         );
-        if (!hasVerif) {
+        if (verificationsIds.length > 0 && !hasVerif) {
           can = 4;
         }
 
@@ -103,7 +104,9 @@ const EventCard = ({
             <div className="flex gap-5">
               <CalendarDateRangeIcon className="w-5 text-orange-500" />{" "}
               {new Date(row.startDate).toDateString()} -{" "}
-              {new Date(row.endDate).toDateString()}
+              {new Date(row.endDate).toDateString()} <br />
+              {format(new Date(row.startDate), "hh:mm aa")} -{" "}
+              {format(new Date(row.endDate), "hh:mm aa")}
             </div>
             <div className="flex gap-5">
               <MapPinIcon className="w-5 text-orange-500" /> {row.location}
@@ -145,7 +148,7 @@ const EventCard = ({
             </CustomButton>
           )}
 
-          {user && canNotRegister && (
+          {user && canNotRegister !== undefined && (
             <div className="p-2 text-sm">
               {canNotRegister == 1 && <>You are the owner</>}
               {canNotRegister == 2 && <>Seats taken</>}

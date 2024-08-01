@@ -48,7 +48,8 @@ const CategoriesSection = () => {
 
               <div className="flex justify-between">
                 <div className="flex gap-3">
-                  <CalendarDaysIcon className="text-gray-600 w-5" /> 10 events
+                  <CalendarDaysIcon className="text-gray-600 w-5" />{" "}
+                  {(category as any).events.length} events
                 </div>
                 <CustomButton
                   label="Explore"

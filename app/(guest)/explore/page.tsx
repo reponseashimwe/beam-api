@@ -29,10 +29,10 @@ const EventsSection = () => {
         />
       </section>
 
-      <section className="bg-white py-10 content-grid">
+      <section className="bg-white py-10 content-grid min-h-screen">
         <div className="">
           <div className="flex flex-col justify-center items-center">
-            <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-6 ">
               Explore events
             </h2>
             <div className="text-sm font-medium border border-2 border-gray-300 rounded-md w-24"></div>

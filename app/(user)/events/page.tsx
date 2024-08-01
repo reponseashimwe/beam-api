@@ -110,6 +110,7 @@ const Form: FC<FormProps> = ({ closeModal }) => {
   });
 
   const create = async (data: EventType) => {
+    setUploading(true);
     try {
       let posterUrl = "";
       const formData = new FormData();

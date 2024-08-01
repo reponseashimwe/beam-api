@@ -13,6 +13,7 @@ import Table from "../table/Table";
 import Status from "../common/Status";
 import CustomButton from "../common/form/Button";
 import Modal from "../common/Modal";
+import { format } from "date-fns";
 
 export interface UserBookingType extends UserBooking {
   user: User;
@@ -52,11 +53,13 @@ const MyEventCard = ({
       <div className="flex flex-col ">
         <div className="flex  gap-4 flex-col">
           <div className="font-bold text-xl text-gray-900 mb-2">{row.name}</div>
-          <div className="flex gap-5">
-            <div className="flex gap-5">
+          <div className="flex flex-col gap-5">
+            <div className="flex  gap-5">
               <CalendarDateRangeIcon className="w-5 text-orange-500" />{" "}
               {new Date(row.startDate).toDateString()} -{" "}
-              {new Date(row.endDate).toDateString()}
+              {new Date(row.endDate).toDateString()} <br />
+              {format(new Date(row.startDate), "hh:mm aa")} -{" "}
+              {format(new Date(row.endDate), "hh:mm aa")}
             </div>
             <div className="flex gap-5">
               <MapPinIcon className="w-5 text-orange-500" /> {row.location}
